@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Pets - Pet Adoption</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Decorative pet background elements -->
+  <div class="pet-decoration">🐕</div>
+  <div class="pet-decoration">🐶</div>
+  <div class="pet-decoration">🐾</div>
+  <div class="pet-decoration">🐩</div>
+  
+  <div class="container">
+    <div class="page-header">
+      <h2>🐶 Available Pets for Adoption</h2>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="success-message">
+          <p>{{ message }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <div class="welcome-message">
+        <p>
+          Welcome, <strong>{{ user.username }}</strong>! 
+        </p>
+      </div>
+      <div class="nav-links">
+        <a href="{% url 'upload_pet' %}">📸 Upload New Pet</a>
+        <a href="{% url 'contact_us' %}">📧 Contact Us</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+      </div>
+    {% else %}
+      <div class="nav-links">
+        <a href="{% url 'login' %}">🔐 Login</a>
+        <a href="{% url 'register' %}">📝 Sign Up</a>
+        <a href="{% url 'contact_us' %}">📧 Contact Us</a>
+      </div>
+    {% endif %}
+
+    <div class="pets-grid">
+      {% for pet in pets %}
+        <div class="pet">
+          {% if pet.image %}
+            <img src="{{ pet.image.url }}" alt="{{ pet.name }}">
+          {% endif %}
+          <div class="pet-content">
+            <h3>{{ pet.name }} <span style="color: var(--text-light); font-size: 1rem;">({{ pet.breed }})</span></h3>
+            <p><strong>Age:</strong> {{ pet.age }} months old</p>
+            {% if pet.uploaded_by %}
+              <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 0.5rem;">
+                <em>Uploaded by: {{ pet.uploaded_by.username }}</em>
+                {% if user.is_superuser or user.is_staff or pet.uploaded_by == user %}
+                  <span style="color: var(--primary-color);"> (You can edit/delete)</span>
+                {% endif %}
+              </p>
+            {% endif %}
+            {% if pet.owner_name %}
+              <p><strong>Owner:</strong> {{ pet.owner_name }}</p>
+            {% endif %}
+            <p>{{ pet.description }}</p>
+            
+            {% if user.is_authenticated %}
+              {% if user.is_superuser or user.is_staff or pet.uploaded_by == user %}
+                <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <a href="{% url 'edit_pet' pet.id %}" class="btn" style="flex: 1; min-width: 120px; text-decoration: none; text-align: center; background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    ✏️ Edit
+                  </a>
+                  <a href="{% url 'delete_pet' pet.id %}" class="btn" style="flex: 1; min-width: 120px; text-decoration: none; text-align: center; background: linear-gradient(135deg, #ef4444, #dc2626);">
+                    🗑️ Delete
+                  </a>
+                </div>
+              {% endif %}
+            {% endif %}
+            
+            {% if pet.owner_email %}
+              {% if user.is_authenticated %}
+                <div style="margin-top: 1rem;">
+                  <a href="{% url 'contact_owner' pet.id %}" class="btn" style="display: inline-block; text-decoration: none; width: 100%; text-align: center;">
+                    📧 Contact Owner
+                  </a>
+                </div>
+              {% else %}
+                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 193, 7, 0.1); border-radius: 8px; text-align: center;">
+                  <p style="color: var(--text-light); font-size: 0.9rem; margin: 0; margin-bottom: 0.5rem;">🔒 Login required to contact owner</p>
+                  <a href="{% url 'login' %}" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Login Here</a> or 
+                  <a href="{% url 'register' %}" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Sign Up</a>
+                </div>
+              {% endif %}
+            {% else %}
+              <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 193, 7, 0.1); border-radius: 8px; text-align: center;">
+                <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Owner contact information not available</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <div class="empty-state">
+          <p>No pets available right now 🐾</p>
+          <p style="margin-top: 1rem; font-size: 1rem;">Check back soon for new furry friends!</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

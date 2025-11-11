@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload New Pet - Pet Adoption</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Decorative pet background elements -->
+  <div class="pet-decoration">🐕</div>
+  <div class="pet-decoration">🐶</div>
+  <div class="pet-decoration">🐾</div>
+  <div class="pet-decoration">🐩</div>
+  
+  <div class="container">
+    <div class="page-header">
+      <h2>📸 Upload a New Pet</h2>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Pet Name *</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+          <div class="error-message">{{ form.name.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.age.id_for_label }}">Age *</label>
+        {{ form.age }}
+        {% if form.age.errors %}
+          <div class="error-message">{{ form.age.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.breed.id_for_label }}">Breed *</label>
+        {{ form.breed }}
+        {% if form.breed.errors %}
+          <div class="error-message">{{ form.breed.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Description *</label>
+        {{ form.description }}
+        {% if form.description.errors %}
+          <div class="error-message">{{ form.description.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.image.id_for_label }}">Pet Image</label>
+        {{ form.image }}
+        {% if form.image.errors %}
+          <div class="error-message">{{ form.image.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid rgba(0, 0, 0, 0.1);">
+        <h3 style="color: var(--text-dark); margin-bottom: 1rem; font-size: 1.2rem;">Owner Information</h3>
+        
+        <div class="form-group">
+          <label for="{{ form.owner_name.id_for_label }}">Owner Name *</label>
+          <p style="margin-bottom: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-style: italic;">Name of the pet owner</p>
+          {{ form.owner_name }}
+          {% if form.owner_name.errors %}
+            <div class="error-message">{{ form.owner_name.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.owner_email.id_for_label }}">Owner Email *</label>
+          <p style="margin-bottom: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-style: italic;">Email address to contact the owner</p>
+          {{ form.owner_email }}
+          {% if form.owner_email.errors %}
+            <div class="error-message">{{ form.owner_email.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.owner_phone.id_for_label }}">Owner Phone (Optional)</label>
+          <p style="margin-bottom: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-style: italic;">Phone number (optional)</p>
+          {{ form.owner_phone }}
+          {% if form.owner_phone.errors %}
+            <div class="error-message">{{ form.owner_phone.errors }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <button type="submit">✨ Upload Pet</button>
+    </form>
+
+    <p style="text-align:center;">
+      <a href="{% url 'available_pets' %}" class="back-link">← Back to Available Pets</a>
+    </p>
+  </div>
+</body>
+</html>

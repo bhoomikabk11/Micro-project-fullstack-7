@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Owner - {{ pet.name }} - Pet Adoption</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Decorative pet background elements -->
+  <div class="pet-decoration">🐕</div>
+  <div class="pet-decoration">🐶</div>
+  <div class="pet-decoration">🐾</div>
+  <div class="pet-decoration">🐩</div>
+  
+  <div class="container">
+    <div class="page-header">
+      <h2>📧 Contact Owner</h2>
+      <div style="background: rgba(255, 255, 255, 0.95); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; text-align: left;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">About {{ pet.name }}</h3>
+        <p><strong>Breed:</strong> {{ pet.breed }}</p>
+        <p><strong>Age:</strong> {{ pet.age }} months old</p>
+        <p><strong>Owner:</strong> {{ pet.owner_name }}</p>
+        {% if pet.owner_phone %}
+          <p><strong>Phone:</strong> {{ pet.owner_phone }}</p>
+        {% endif %}
+        <p style="margin-top: 1rem;"><strong>Description:</strong> {{ pet.description }}</p>
+      </div>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="success-message">
+          <p>{{ message }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Your Name *</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+          <div class="error-message">{{ form.name.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Your Email *</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="error-message">{{ form.email.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.phone.id_for_label }}">Your Phone Number (Optional)</label>
+        {{ form.phone }}
+        {% if form.phone.errors %}
+          <div class="error-message">{{ form.phone.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.message.id_for_label }}">Your Message *</label>
+        {{ form.message }}
+        {% if form.message.errors %}
+          <div class="error-message">{{ form.message.errors }}</div>
+        {% endif %}
+        <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.9rem;">
+          Let the owner know why you're interested in adopting {{ pet.name }}!
+        </p>
+      </div>
+
+      <button type="submit">📤 Send Message to Owner</button>
+    </form>
+
+    <p style="text-align:center;">
+      <a href="{% url 'available_pets' %}" class="back-link">← Back to Available Pets</a>
+    </p>
+  </div>
+</body>
+</html>
+

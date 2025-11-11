@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Pet Adoption</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Decorative pet background elements -->
+  <div class="pet-decoration">🐕</div>
+  <div class="pet-decoration">🐶</div>
+  <div class="pet-decoration">🐾</div>
+  <div class="pet-decoration">🐩</div>
+  
+  <div class="container">
+    <div class="page-header">
+      <h2>📧 Contact Us</h2>
+      <p style="color: white; margin-top: 1rem; font-size: 1.1rem;">
+        Have questions or concerns? We're here to help! Fill out the form below and we'll get back to you as soon as possible.
+      </p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="success-message">
+          <p>{{ message }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Your Name *</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+          <div class="error-message">{{ form.name.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Your Email *</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="error-message">{{ form.email.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.subject.id_for_label }}">Subject *</label>
+        {{ form.subject }}
+        {% if form.subject.errors %}
+          <div class="error-message">{{ form.subject.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.message.id_for_label }}">Your Message *</label>
+        {{ form.message }}
+        {% if form.message.errors %}
+          <div class="error-message">{{ form.message.errors }}</div>
+        {% endif %}
+      </div>
+
+      <button type="submit">📤 Send Message</button>
+    </form>
+
+    <p style="text-align:center;">
+      <a href="{% url 'available_pets' %}" class="back-link">← Back to Available Pets</a>
+    </p>
+  </div>
+</body>
+</html>
+

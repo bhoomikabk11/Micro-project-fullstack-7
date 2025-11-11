@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Pet Adoption</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Decorative pet background elements -->
+  <div class="pet-decoration">🐕</div>
+  <div class="pet-decoration">🐶</div>
+  <div class="pet-decoration">🐾</div>
+  <div class="pet-decoration">🐩</div>
+  
+  <div class="container">
+    <div class="page-header">
+      <h2>📝 Create Account</h2>
+      <p style="color: var(--text-dark); margin-top: 1rem; font-size: 1rem;">
+        Sign up to upload pets and manage your listings!
+      </p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error-message">
+          <p>{{ message }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username *</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          <div class="error-message">{{ form.username.errors }}</div>
+        {% endif %}
+        <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.85rem;">
+          Choose a unique username
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Email Address *</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="error-message">{{ form.email.errors }}</div>
+        {% endif %}
+        <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.85rem;">
+          You'll use this email to login
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Password *</label>
+        <div class="password-wrapper">
+          {{ form.password1 }}
+          <button type="button" class="password-toggle" onclick="togglePassword('{{ form.password1.id_for_label }}', this)" aria-label="Toggle password visibility">
+            👁️
+          </button>
+        </div>
+        {% if form.password1.errors %}
+          <div class="error-message">{{ form.password1.errors }}</div>
+        {% endif %}
+        {% if form.password1.help_text %}
+          <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.85rem;">
+            {{ form.password1.help_text }}
+          </p>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Confirm Password *</label>
+        <div class="password-wrapper">
+          {{ form.password2 }}
+          <button type="button" class="password-toggle" onclick="togglePassword('{{ form.password2.id_for_label }}', this)" aria-label="Toggle password visibility">
+            👁️
+          </button>
+        </div>
+        {% if form.password2.errors %}
+          <div class="error-message">{{ form.password2.errors }}</div>
+        {% endif %}
+        {% if form.password2.help_text %}
+          <p style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.85rem;">
+            {{ form.password2.help_text }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="error-message">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <button type="submit">✨ Create Account</button>
+    </form>
+
+    <p style="text-align:center; margin-top: 1.5rem;">
+      <span style="color: var(--text-dark);">Already have an account? </span>
+      <a href="{% url 'login' %}" style="color: var(--primary-color); font-weight: 600;">Login Here</a>
+    </p>
+
+    <p style="text-align:center;">
+      <a href="{% url 'available_pets' %}" class="back-link">← Back to Available Pets</a>
+    </p>
+  </div>
+
+  <script>
+    function togglePassword(inputId, toggleButton) {
+      const input = document.getElementById(inputId);
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        toggleButton.textContent = '🙈';
+        toggleButton.setAttribute('aria-label', 'Hide password');
+      } else {
+        input.type = 'password';
+        toggleButton.textContent = '👁️';
+        toggleButton.setAttribute('aria-label', 'Show password');
+      }
+    }
+  </script>
+</body>
+</html>
+

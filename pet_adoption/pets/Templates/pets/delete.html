@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Pet - {{ pet.name }} - Pet Adoption</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Decorative pet background elements -->
+  <div class="pet-decoration">🐕</div>
+  <div class="pet-decoration">🐶</div>
+  <div class="pet-decoration">🐾</div>
+  <div class="pet-decoration">🐩</div>
+  
+  <div class="container">
+    <div class="page-header">
+      <h2>🗑️ Delete Pet</h2>
+    </div>
+
+    <div class="card" style="max-width: 500px; margin: 2rem auto;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        {% if pet.image %}
+          <img src="{{ pet.image.url }}" alt="{{ pet.name }}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+        {% endif %}
+        <h3 style="color: var(--text-dark); margin-bottom: 1rem;">{{ pet.name }}</h3>
+        <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+          Are you sure you want to delete <strong>{{ pet.name }}</strong>? This action cannot be undone.
+        </p>
+      </div>
+
+      <form method="POST" style="text-align: center;">
+        {% csrf_token %}
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+          <button type="submit" style="background: linear-gradient(135deg, #ef4444, #dc2626); flex: 1;">
+            🗑️ Yes, Delete
+          </button>
+          <a href="{% url 'available_pets' %}" class="btn" style="flex: 1; text-align: center; text-decoration: none; display: inline-block;">
+            ❌ Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <p style="text-align:center;">
+      <a href="{% url 'available_pets' %}" class="back-link">← Back to Available Pets</a>
+    </p>
+  </div>
+</body>
+</html>
+
+
+
+
+
